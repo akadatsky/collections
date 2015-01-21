@@ -2,6 +2,8 @@ package com.company;
 
 import java.util.AbstractCollection;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class BinaryTree<E extends Comparable<E>> extends AbstractCollection<E> {
 
@@ -10,7 +12,7 @@ public class BinaryTree<E extends Comparable<E>> extends AbstractCollection<E> {
 
     @Override
     public Iterator<E> iterator() {
-        return new Itr<E>();
+        return new Itr();
     }
 
     @Override
@@ -20,47 +22,93 @@ public class BinaryTree<E extends Comparable<E>> extends AbstractCollection<E> {
 
     @Override
     public boolean add(E e) {
-        size++;
-        addLogic(e);
-        return true;
+        if (e == null) {
+            return false;
+        }
+        return addLogic(e);
     }
 
-    private void addLogic(E e) {
+    private boolean addLogic(E e) {
         if (root == null) {
-            root = new Node<E>(e);
+            root = new Node(e);
+            size++;
+            return true;
+        }
+        Node tmp = root;
+        while (true) {
+            int compareResult = e.compareTo(tmp.element);
+
+            if (compareResult < 0) {
+                if (tmp.left == null) {
+                    tmp.left = new Node(e, tmp);
+                    size++;
+                    return true;
+                } else {
+                    tmp = tmp.left;
+                    continue;
+                }
+            }
+
+            if (compareResult > 0) {
+                if (tmp.right == null) {
+                    tmp.right = new Node(e, tmp);
+                    size++;
+                    return true;
+                } else {
+                    tmp = tmp.right;
+                    continue;
+                }
+            }
+
+            if (compareResult == 0) {
+                return false;
+            }
+
         }
     }
 
-    private class Node<E> {
+    private class Node {
 
-        private Node<E> parent;
-        private Node<E> left;
-        private Node<E> right;
+        private Node parent;
+        private Node left;
+        private Node right;
         private E element;
 
-        public Node(E e) {
-            element = e;
+        public Node(E element) {
+            this.element = element;
         }
 
-        public Node(E element, Node<E> parent) {
+        public Node(E element, Node parent) {
             this.parent = parent;
             this.element = element;
         }
     }
 
-    private class Itr<E> implements Iterator<E> {
+    private class Itr implements Iterator<E> {
+
+        private Queue<Node> queue = new LinkedList<Node>();
 
         public Itr() {
+            iterateTree(root);
+        }
+
+        private void iterateTree(Node node) {
+            if (node == null) {
+                return;
+            }
+            iterateTree(node.left);
+            queue.add(node);
+            iterateTree(node.right);
         }
 
         @Override
         public boolean hasNext() {
-            return false;
+            return !queue.isEmpty();
         }
 
         @Override
         public E next() {
-            return null;
+            return queue.poll().element;
         }
 
     }

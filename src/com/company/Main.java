@@ -3,26 +3,40 @@ package com.company;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import java.util.TreeSet;
 
 public class Main {
 
-    private static final int COUNT = 50000;
+    private static final int COUNT = 10000;
 
     public static void main(String[] args) {
         System.out.println("HashSet");
-        Set<Person> hashSet = new HashSet<Person>(16);
+        Collection<Person> hashSet = new HashSet<Person>(16);
         testCollection(hashSet);
         System.out.println("======================================================");
         System.out.println("TreeSet");
-        Set<Person> treeSet = new TreeSet<Person>();
+        Collection<Person> treeSet = new TreeSet<Person>();
         testCollection(treeSet);
         System.out.println("======================================================");
         System.out.println("ArrayList");
-        List<Person> arrayList = new ArrayList<Person>();
+        Collection<Person> arrayList = new ArrayList<Person>();
         testCollection(arrayList);
+        System.out.println("======================================================");
+        System.out.println("BinaryTree");
+        Collection<Person> binaryTree = new BinaryTree<Person>();
+        testCollection(binaryTree);
+
+//        checkBinaryTre();
+
+    }
+
+    private static void checkBinaryTre() {
+        BinaryTree<String> tree = new BinaryTree<String>();
+        tree.add("bbb");
+        tree.add("aaa");
+        tree.add("ccc");
+        tree.add("aab");
+        System.out.println(tree);
     }
 
     private static void testCollection(Collection<Person> persons) {
