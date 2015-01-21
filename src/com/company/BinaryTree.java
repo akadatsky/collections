@@ -67,6 +67,39 @@ public class BinaryTree<E extends Comparable<E>> extends AbstractCollection<E> {
         }
     }
 
+    @Override
+    public void clear() {
+        root = null;
+        size = 0;
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        Node tmp = root;
+        while (true) {
+            if (tmp == null) {
+                return false;
+            }
+            Comparable<E> e = (Comparable<E>) o;
+            int compareResult = e.compareTo(tmp.element);
+
+            if (compareResult < 0) {
+                tmp = tmp.left;
+                continue;
+            }
+
+            if (compareResult > 0) {
+                tmp = tmp.right;
+                continue;
+            }
+
+            if (compareResult == 0) {
+                return true;
+            }
+
+        }
+    }
+
     private class Node {
 
         private Node parent;
